@@ -12,8 +12,7 @@ import net.minecraft.world.World;
 public class BlockAlchemicalChest extends MMTileBlock {
 
     public BlockAlchemicalChest() {
-        super(Material.iron);
-
+        super(Material.iron, 2.0F, 2.0F);
         setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
     }
 
