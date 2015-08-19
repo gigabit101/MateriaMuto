@@ -59,6 +59,9 @@ item.repairTalismanAmulet.name=Repair Talisman
 item.volcanicAmulet.name=Volcanic Amulet
 item.zeroRing.name=Zero Ring
 
+#Items
+item.philosophersStone.name=Philosophers Stone
+
 
 #Enchantment Scroll
 item.enchantmentScroll.name=Enchantment Scroll

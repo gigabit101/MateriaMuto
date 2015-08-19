@@ -24,5 +24,6 @@ public class LibItemNames {
     public static final String IRON_BAND = "ironBand";
     public static final String ELDER_KNOWLEDGE = "elderKnowledge";
     public static final String ENCHANT_SCROLL = "enchantmentScroll";
+    public static final String PHILOSOPHERS_STONE = "philosophersStone";
 
 }

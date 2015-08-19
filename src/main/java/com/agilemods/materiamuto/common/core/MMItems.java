@@ -43,6 +43,8 @@ public class MMItems {
     public static Item zeroRing;
     public static Item harvestGodessRing;
     public static Item ironBand;
+    
+    public static Item philoStone;
 
     public static void init() {
         covalenceDust = new ItemCovalenceDust().setUnlocalizedName(LibItemNames.COVALENCE_DUST);
@@ -68,6 +70,7 @@ public class MMItems {
         zeroRing = new ItemZeroRing().setUnlocalizedName(LibItemNames.ZERO_RING);
         harvestGodessRing = new ItemHarvestGodessRing().setUnlocalizedName(LibItemNames.HARVEST_RING);
         ironBand = new ItemIronBand().setUnlocalizedName(LibItemNames.IRON_BAND);
+        philoStone = new ItemPhilosophersStone().setUnlocalizedName(LibItemNames.PHILOSOPHERS_STONE);
 
         registerItem(covalenceDust);
         registerItem(alchemicalFuel);
@@ -76,6 +79,7 @@ public class MMItems {
         registerItem(elderKnowledge);
         registerItem(enchantScroll);
         registerItem(alchemicalBag);
+        registerItem(philoStone);
 
         // Rings & Amulets
         registerItem(blackHoleRing);

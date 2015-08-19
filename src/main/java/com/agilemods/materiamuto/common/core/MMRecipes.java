@@ -12,6 +12,7 @@ public class MMRecipes {
         ItemStack dustLow = new ItemStack(MMItems.covalenceDust, 40, 0);
         ItemStack dustMedium = new ItemStack(MMItems.covalenceDust, 40, 1);
         ItemStack dustHigh = new ItemStack(MMItems.covalenceDust, 40, 2);
+        PhiloStoneRecipes.init();
 
         // Low Dust
         GameRegistry.addShapelessRecipe(
@@ -98,6 +99,17 @@ public class MMRecipes {
                 "AAA",
                 'A', new ItemStack(MMItems.alchemicalFuel, 1, 2),
                 'M', new ItemStack(MMItems.matter, 1, 0)
+        );
+        
+        // PhiloStone
+        GameRegistry.addShapedRecipe(
+                new ItemStack(MMItems.philoStone, 1, 0),
+                "RGR",
+                "GDG",
+                "RGR",
+                'R', new ItemStack(Items.redstone),
+                'G', new ItemStack(Items.glowstone_dust),
+                'D', Items.diamond
         );
     }
 }
