@@ -21,6 +21,7 @@ item.alchemicalBag.black.name=Alchemical Bag (Black)
 #Blocks
 tile.condenser.name=Condenser
 tile.alchemicalChest.name=Alchemical Chest
+tile.interdictionTorch.name=Interdiction Torch
 
 #Covalence Dusts
 item.covalenceDust.low.name=Low Covalence Dust
