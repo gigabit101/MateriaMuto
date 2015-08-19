@@ -28,9 +28,11 @@ public class TileCondenser extends TileMM implements IInventory {
     public double targetEmc;
     private double lastEmc;
     public double emc;
+    public int speed = 1;
 
     @Override
     public void updateEntity() {
+    	super.updateEntity();
         if (!open) {
             if (animationTick < ANIMATION_TICK_MAX) {
                 animationTick++;
@@ -41,7 +43,7 @@ public class TileCondenser extends TileMM implements IInventory {
             }
         }
 
-        if (!worldObj.isRemote) {
+        if (!worldObj.isRemote && worldObj.getTotalWorldTime() % speed == 0) {
             if (animationCooldown > 0) {
                 animationCooldown--;
             }
