@@ -1,11 +1,12 @@
 package com.agilemods.materiamuto.common.inventory;
 
+import com.agilemods.materiamuto.common.inventory.prefab.ContainerMaterialMuto;
 import com.agilemods.materiamuto.common.tile.TileAlchemicalChest;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 
-public class ContainerAlchemicalChest extends Container {
+public class ContainerAlchemicalChest extends ContainerMaterialMuto {
 
     private EntityPlayer entityPlayer;
 

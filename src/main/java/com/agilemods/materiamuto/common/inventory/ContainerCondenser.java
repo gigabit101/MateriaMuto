@@ -1,5 +1,6 @@
 package com.agilemods.materiamuto.common.inventory;
 
+import com.agilemods.materiamuto.common.inventory.prefab.ContainerMaterialMuto;
 import com.agilemods.materiamuto.common.inventory.slot.SlotHasEMC;
 import com.agilemods.materiamuto.common.network.packet.PacketHandler;
 import com.agilemods.materiamuto.common.network.packet.message.MessageGuiData;
@@ -12,7 +13,7 @@ import net.minecraft.inventory.Slot;
 
 import java.util.List;
 
-public class ContainerCondenser extends Container implements MessageGuiData.IGuiData {
+public class ContainerCondenser extends ContainerMaterialMuto implements MessageGuiData.IGuiData {
 
     public EntityPlayer entityPlayer;
 
