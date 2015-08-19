@@ -23,6 +23,7 @@ public class ItemAlchemicalBag extends MMSubItem {
     public ItemAlchemicalBag() {
         super();
         setHasSubtypes(true);
+        setMaxStackSize(1);
     }
 
     @Override
