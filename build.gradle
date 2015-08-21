@@ -1,145 +1,90 @@
 buildscript {
     repositories {
         mavenCentral()
-        maven { url = "http://files.minecraftforge.net/maven" }
-        maven { url = "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
     }
-    dependencies { classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT' }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+    }
 }
 
 apply plugin: 'forge'
-apply plugin: 'maven-publish'
 
-ext.buildnumber = 0
-if (System.getenv('BUILD_NUMBER') != null) {
-    project.buildnumber = System.getenv('BUILD_NUMBER')
-} else {
-    logger.lifecycle "No build number detected, setting to 0"
-}
-
-group = "com.agilemods"
+version = "1.1.6"
+group= "com.gigabit101.MateriaMuto" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "MateriaMuto"
-version = "${minecraft_version}-${mod_version}-b${buildnumber}"
 
-if (project.hasProperty('mod_appendix')) {
-    version += "_${project.mod_appendix}"
-}
-
-minecraft {
-    version = "${minecraft_version}-${forge_version}"
-    runDir = 'run'
-
-    replace "@VERSION@", project.version
-    replaceIn "lib/LibMisc.java"
-}
-
-configurations {
-    compile.extendsFrom exportedCompile
-}
-
-repositories {
-    mavenCentral()
-    maven { url = "http://agilemods.com/maven" }
-    maven { url = "http://maven.ic2.player.to/" }
+def grabDep(name, url){
+	ant.get(src: url, dest: 'dep')
+	file("dep/" + url.substring(url.lastIndexOf("/"))).renameTo(file("dep/" + name + ".jar"))
 }
 
 dependencies {
-    compile "net.industrial-craft:industrialcraft-2:2.2.658-experimental:api"
-    compile "appeng:appliedenergistics2:rv1-stable-1:dev"
-    compile "com.azanor.baubles:Baubles:1.7.10-1.0.1.10:api"
-    compile "com.azanor.thaumcraft:Thaumcraft:1.7.10-4.2.2.0:api"
-    compile "org.invtweaks.invtweaks:InvTweaks:1.58-147:api"
-}
-
-sourceSets {
-    main {
-        java {
-            srcDir 'src/main/java'
-        }
-        resources {
-            srcDir 'resources'
-        }
+    def f = new File('dep/')
+    if(f.exists()){
+        f.delete()
     }
+    f.mkdirs()
+    if(!f.exists()){
+        f.mkdir()
+    }
+	println("  Downloading dependencies!")
+	grabDep('gbl', 'https://dl.dropboxusercontent.com/u/47135879/Baubles-deobf-1.7.10-1.0.1.4.jar')
+	grabDep('gbt', 'https://dl.dropboxusercontent.com/u/47135879/Thaumcraft-1.7.10-4.2.0.1.jar')
+	grabDep('gbb', 'http://jenkins.ic2.player.to/job/IC2_experimental/lastSuccessfulBuild/artifact/build/libs/industrialcraft-2-2.2.765-experimental-dev.jar')
+    
+
+
+	println("  Adding dependencies!")
+    compile files("dep/gbl.jar")
+     compile files("dep/gbt.jar")
+	 compile files("dep/gbb.jar")
+	println("  Finished adding dependencies!")
 }
 
-processResources {
+minecraft {
+    version = "1.7.10-10.13.0.1200"
+    assetDir = "eclipse/assets"
+}
+
+dependencies {
+	compile files (
+		'Baubles-deobf.jar',
+		'Thaumcraft.jar',
+		'industrialcraft.jar'
+	)
+}
+
+processResources
+{
+    // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
 
+    // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
-        include '**/*.info'
-        include '**/*.properties'
-
-        expand 'version': project.version, 'mcversion': project.minecraft.version
+        include 'mcmod.info'
+                
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
     }
-
+        
+    // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
-        exclude '**/*.info'
-        exclude '**/*.properties'
+        exclude 'mcmod.info'
     }
 }
 
-jar {
-    from { configurations.exportedCompile.collect { it.isDirectory() ? it : zipTree(it) } }
-}
-
-task sourceJar(type: Jar) {
-    from sourceSets.main.allSource
-    classifier = 'sources'
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    from javadoc.destinationDir
-    classifier = 'javadoc'
-}
-
-task deobfJar(type: Jar) {
-    from sourceSets.main.output
-    from { configurations.exportedCompile.collect { it.isDirectory() ? it : zipTree(it) } }
-    classifier = 'dev'
-}
-
-build.dependsOn sourceJar, deobfJar
-
-publishing {
-    tasks.publish.dependsOn 'build'
-    publications {
-        mavenJava(MavenPublication) {
-            groupId = project.group
-            version = project.version
-            artifactId = project.archivesBaseName
-
-            artifact sourceJar
-            artifact deobfJar
-        }
+jar.doFirst {
+    version = project.minecraft.version + "-" + version;
+    if (System.getenv().BUILD_NUMBER != null) {
+        version += "-" + "${System.getenv().BUILD_NUMBER}"
     }
-
-    repositories {
-        maven {
-        	url "file://usr/share/nginx/html/maven"
-        }
-    }
-}
-
-String getChangelogText() {
-    def changelogFile = new File('ReleaseNotes.txt')
-    String str = ''
-    String separator = '---'
-    int lineCount = 0
-    boolean done = false
-    changelogFile.eachLine {
-        if (done || it == null) {
-            return
-        }
-        if (lineCount < 3) {
-            lineCount++
-            if (it.startsWith(separator)) {return}
-        }
-        if (!it.startsWith(separator)) {
-            str += "$it\n"
-            return
-        }
-        done = true // once we go past the first version block, parse no more
-    }
-    return str
 }
