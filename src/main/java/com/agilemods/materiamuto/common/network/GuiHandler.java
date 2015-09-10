@@ -9,8 +9,10 @@ import net.minecraft.world.World;
 import com.agilemods.materiamuto.MateriaMuto;
 import com.agilemods.materiamuto.client.gui.GuiAlchemicalBag;
 import com.agilemods.materiamuto.client.gui.GuiCondenser;
+import com.agilemods.materiamuto.client.gui.GuiCrafting;
 import com.agilemods.materiamuto.common.inventory.ContainerAlchemicalBag;
 import com.agilemods.materiamuto.common.inventory.ContainerCondenser;
+import com.agilemods.materiamuto.common.inventory.ContainerCrafting;
 import com.agilemods.materiamuto.common.tile.TileCondenser;
 
 public class GuiHandler implements IGuiHandler {
@@ -18,6 +20,7 @@ public class GuiHandler implements IGuiHandler {
     public static enum Type {
         GUI_ALCHEMICAL_BAG,
         GUI_CONDENSER,
+        GUI_PHILO_CRAFTING,
         GUI_ALCHEMICAL_CHEST;
 
         public void openGui(EntityPlayer entityPlayer) {
@@ -52,6 +55,8 @@ public class GuiHandler implements IGuiHandler {
                 return new ContainerCondenser(entityPlayer, (TileCondenser) world.getTileEntity(x, y, z));
             case GUI_ALCHEMICAL_CHEST:
                 return new ContainerAlchemicalChest(entityPlayer, (TileAlchemicalChest) world.getTileEntity(x, y, z));
+            case GUI_PHILO_CRAFTING:
+            	return new ContainerCrafting(entityPlayer.inventory, world);
         }
         return null;
     }
@@ -66,6 +71,8 @@ public class GuiHandler implements IGuiHandler {
                 return new GuiCondenser(entityPlayer, (TileCondenser) world.getTileEntity(x, y, z));
             case GUI_ALCHEMICAL_CHEST:
                 return new GuiAlchemicalChest(entityPlayer, (TileAlchemicalChest) world.getTileEntity(x, y, z));
+            case GUI_PHILO_CRAFTING:
+            	return new GuiCrafting(entityPlayer.inventory, world);
         }
         return null;
     }

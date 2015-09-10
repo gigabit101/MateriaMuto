@@ -12,5 +12,5 @@ public class EntityHomingArrow extends EntityArrow {
 
     public EntityHomingArrow(World world, EntityLivingBase entityLivingBase, float par3) {
         super(world, entityLivingBase, par3);
-    }
+    }   
 }
